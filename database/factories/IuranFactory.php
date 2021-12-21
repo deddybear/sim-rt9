@@ -2,19 +2,19 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
+use App\Models\Iuran;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Ramsey\Uuid\Uuid;
 
-class UserFactory extends Factory
+class IuranFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = User::class;
+    protected $model = Iuran::class;
 
     /**
      * Define the model's default state.
@@ -24,11 +24,9 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'id'       => Uuid::uuid4(),
-            'nama'     => $this->faker->name,
-            'email'    => $this->faker->unique()->safeEmail,
-            'password' => Hash::make('qwerty'),
-            'roles'    => 1,
+            'id'         => Uuid::uuid4(),
+            'ket'        => '',
+            'jumlah'     => $this->faker->numberBetween(1000, 30000)
         ];
     }
 }

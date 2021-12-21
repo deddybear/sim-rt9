@@ -2,19 +2,19 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
+use App\Models\Hutang;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Ramsey\Uuid\Uuid;
 
-class UserFactory extends Factory
+class HutangFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = User::class;
+    protected $model = Hutang::class;
 
     /**
      * Define the model's default state.
@@ -24,11 +24,8 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'id'       => Uuid::uuid4(),
-            'nama'     => $this->faker->name,
-            'email'    => $this->faker->unique()->safeEmail,
-            'password' => Hash::make('qwerty'),
-            'roles'    => 1,
+            'id'       => 'bd7c5570-5312-4159-afc9-05f24434d6ce',
+            'jumlah'   => $this->faker->numberBetween(1000, 30000),
         ];
     }
 }

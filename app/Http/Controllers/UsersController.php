@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Ramsey\Uuid\Uuid;
 
 class UsersController extends Controller {
     /**
@@ -12,26 +14,136 @@ class UsersController extends Controller {
      */
     public function __construct()
     {
-        //
+        date_default_timezone_set("Asia/Jakarta");
     }
 
     public function read() {
-        # code...
+        try {
+            $query = DB::table('users')->select('*')->get();
+
+            $data = [
+                'code' => 200,
+                'result' => $query
+            ];
+
+            return response()->json($data);
+
+        } catch (\Throwable $th) {
+            
+            $data = [
+                'code' => 500,
+                'result' => ''
+            ];
+
+            return response()->json($data, 500);
+        }
     }
 
     public function create(Request $req) {
-        # code...
+
+        try {
+
+            DB::table('users')->insert([
+                'id' => Uuid::uuid4(),
+                'nama' => $req->nama,
+                'email' => $req->email,
+                'password' => Hash::make($req->password),
+                'roles' => 1,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ]);    
+
+            $data = [
+                'code' => 200,
+                'result' => 'OK'
+            ];
+
+            return response()->json($data);
+            
+        } catch (\Throwable $th) {
+            
+            $data = [
+                'code' => 500,
+                'result' => ''
+            ];
+
+            return response()->json($data, 500);
+
+        }
+
     }
 
     public function get($id) {
-        # code...
+        
+        try {
+
+            $query = DB::table('users')->where('id', '=', $id)->get();
+
+            $data = [
+                'code' => 200,
+                'result' => $query
+            ];
+
+            return response()->json($data);
+
+        } catch (\Throwable $th) {
+            
+            $data = [
+                'code' => 500,
+                'result' => ''
+            ];
+
+            return response()->json($data);
+        }
     }
 
     public function update($id, Request $req) {
-        # code...
+        try {
+
+            DB::table('users')->where('id', '=', $id)->update([
+                'nama' => $req->nama,
+                'email' => $req->email,
+                'password' => Hash::make($req->password),
+                'updated_at' => date("Y-m-d H:i:s")
+            ]);    
+
+            $data = [
+                'code' => 200,
+                'result' => 'OK'
+            ];
+
+            return response()->json($data);
+        } catch (\Throwable $th) {
+
+            $data = [
+                'code' => 500,
+                'result' => ''
+            ];
+
+            return response()->json($data);
+        }
     }
 
     public function delete($id) {
-        # code...
+        try {
+            DB::table('users')->where('id', '=', $id)->delete();
+
+            $data = [
+                'code' => 200,
+                'result' => 'OK'
+            ];
+
+            return response()->json($data);
+
+        } catch (\Throwable $th) {
+            
+            $data = [
+                'code' => 500,
+                'result' => ''
+            ];
+
+            return response()->json($data);
+            
+        }
     }
 }
