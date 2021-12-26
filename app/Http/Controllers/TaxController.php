@@ -142,4 +142,24 @@ class TaxController extends Controller {
             return response()->json($data, 500);
         }
     }
+
+    public function lastweek(){
+        try {
+            $query = DB::table('iuran')->select('jumlah')->latest('created_at')->first();
+
+            $data = [
+                'code' => 200,
+                'result' => $query
+            ];
+
+            return response()->json($data, 200);
+        } catch (\Throwable $th) {
+            $data = [
+                'code' => 500,
+                'result' => ''
+            ];
+
+            return response()->json($data, 500);
+        }
+    }
 }

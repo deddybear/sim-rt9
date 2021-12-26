@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use Ramsey\Uuid\Uuid;
 
 class UsersController extends Controller {
@@ -18,8 +19,9 @@ class UsersController extends Controller {
     }
 
     public function read() {
+        
         try {
-            $query = DB::table('users')->select('*')->get();
+            $query = User::select('*')->get();
 
             $data = [
                 'code' => 200,
@@ -77,7 +79,7 @@ class UsersController extends Controller {
         
         try {
 
-            $query = DB::table('users')->where('id', '=', $id)->get();
+            $query = User::select('*')->where('id', '=', $id)->get();
 
             $data = [
                 'code' => 200,

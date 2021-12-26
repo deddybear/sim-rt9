@@ -16,9 +16,15 @@ class DebtController extends Controller {
     }
 
     public function read() {
+        
+
         try {
 
-            $query = DB::table('hutang')->select('*')->get();
+            $query = DB::table('hutang')
+        ->select('users.id',  'users.nama', DB::raw('SUM(hutang.jumlah) as total_hutang', 'created_at'))
+        ->join('users', 'hutang.id', '=', 'users.id')
+        ->groupBy('hutang.id')
+        ->get();
 
             $data = [
                 'code'   => 200,
@@ -67,10 +73,15 @@ class DebtController extends Controller {
     }
 
     public function get($id) {
-
-        try {
-            $query = DB::table('hutang')->select('*')->where('id', '=', $id)->get();
         
+        try {
+            $query = DB::table('hutang')
+            ->select('users.id', 'hutang.created_at', 'users.nama',DB::raw('SUM(hutang.jumlah) as Total_Hutang'))
+            ->join('users', 'hutang.id', '=', 'users.id')
+            ->groupBy('hutang.id')
+            ->where('hutang.id', '=', $id)
+            ->get();
+
             $data = [
                 'code'   => 200,
                 'result' => $query
